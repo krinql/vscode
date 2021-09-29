@@ -1,0 +1,170 @@
+{
+	"name": "krinql-vscode",
+	"displayName": "krinql-vscode",
+	"description": "Krinql extension for Visual Studio Code",
+	"version": "0.0.1",
+	"publisher": "krinql",
+	"engines": {
+		"vscode": "^1.60.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onView:krinql-vscode-auth",
+		"onCommand:krinql-vscode.login",
+		"onCommand:krinql-vscode.logout",
+		"onCommand:krinql-vscode.ask",
+		"onCommand:krinql-vscode.explain",
+		"onCommand:krinql-vscode.explaindocument"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "krinql-vscode.login",
+				"category": "Krinql",
+				"title": "Login"
+			},
+			{
+				"command": "krinql-vscode.logout",
+				"category": "Krinql",
+				"title": "Logout"
+			},
+			{
+				"command": "krinql-vscode.explain",
+				"category": "Krinql",
+				"title": "Explain Code"
+			},
+			{
+				"command": "krinql-vscode.explaindocument",
+				"category": "Krinql",
+				"title": "Explain Entire Code"
+			},
+			{
+				"command": "krinql-vscode.ask",
+				"category": "Krinql",
+				"title": "Ask Question"
+			},
+			{
+				"command": "krinql-vscode.docstring",
+				"category": "Krinql",
+				"title": "Write Docstring"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "krinql-vscode.explain",
+				"key": "cmd+ctrl+e",
+				"mac": "cmd+ctrl+e",
+				"win": "ctrl+alt+e",
+				"when": "editorHasSelection"
+			},
+			{
+				"command": "krinql-vscode.explaindocument",
+				"key": "cmd+ctrl+e",
+				"mac": "cmd+ctrl+e",
+				"win": "ctrl+alt+e",
+				"when": "!editorHasSelection"
+			},
+			{
+				"command": "krinql-vscode.ask",
+				"key": "cmd+ctrl+a",
+				"mac": "cmd+ctrl+a",
+				"win": "ctrl+alt+a",
+				"when": "editorHasSelection"
+			},
+			{
+				"command": "krinql-vscode.docstring",
+				"key": "cmd+ctrl+d",
+				"mac": "cmd+ctrl+d",
+				"win": "ctrl+alt+d",
+				"when": "editorHasSelection"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "krinql",
+					"title": "Krinql",
+					"icon": "images/icon.png"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "krinql-vscode-auth",
+				"contents": "[Sign in](command:krinql-vscode.login)\nTo learn more about krinql, go to [our website](https://krinql.com).",
+				"when": "!isAuthed"
+			},
+			{
+				"view": "krinql-vscode-auth",
+				"contents": "[Sign Out](command:krinql-vscode.logout)\nHow to use krinql\n1. Highlight some code\n2. Right click to open the context menu\n3. Select 'Explain Code' or any other function\nLearn more about krinql at [our website](https://krinql.com).",
+				"when": "isAuthed"
+			}
+		],
+		"views": {
+			"krinql": [
+				{
+					"id": "krinql-vscode-auth",
+					"name": "Authentication"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"when": "isAuthed",
+					"command": "krinql-vscode.logout"
+				}
+			],
+			"editor/context": [
+				{
+					"when": "editorHasSelection",
+					"command": "krinql-vscode.explain"
+				},
+				{
+					"when": "!editorHasSelection",
+					"command": "krinql-vscode.explaindocument"
+				},
+				{
+					"when": "editorHasSelection",
+					"command": "krinql-vscode.ask"
+				},
+				{
+					"when": "!editorHasSelection",
+					"command": "krinql-vscode.ask"
+				},
+				{
+					"when": "editorHasSelection",
+					"command": "krinql-vscode.docstring"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "yarn run compile && yarn run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.2.2",
+		"@types/node": "14.x",
+		"@types/vscode": "^1.60.0",
+		"@typescript-eslint/eslint-plugin": "^4.26.0",
+		"@typescript-eslint/parser": "^4.26.0",
+		"eslint": "^7.27.0",
+		"glob": "^7.1.7",
+		"mocha": "^8.4.0",
+		"typescript": "^4.3.2",
+		"vscode-test": "^1.5.2"
+	},
+	"dependencies": {
+		"axios": "^0.21.4",
+		"dotenv": "^10.0.0"
+	}
+}
