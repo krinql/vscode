@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { BACKEND_ENDPOINT, LOGIN_URL, LOGOUT_URL } from './../config';
+import {ENDPOINT} from './../config';
 import * as vscode from 'vscode';
 
 
  
 export const httpHandler = axios.create({
-    baseURL: `${BACKEND_ENDPOINT}/api`,
+    baseURL: `${ENDPOINT}/api`,
     timeout: 25000,
 });
 
