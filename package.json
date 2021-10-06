@@ -3,9 +3,13 @@
 	"displayName": "krinql-vscode",
 	"description": "Krinql extension for Visual Studio Code",
 	"version": "0.0.1",
-	"publisher": "krinql",
+	"publisher": "Krinql",
+	"icon": "images/logo.png",
 	"engines": {
 		"vscode": "^1.60.0"
+	},
+	"repository": {
+		"url": "https://github.com/krinql/vscode"
 	},
 	"categories": [
 		"Other"
