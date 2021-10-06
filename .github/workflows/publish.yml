@@ -1,0 +1,38 @@
+name: Publish Extension
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn install
+      - run: yarn run compile
+      - uses: lannonbr/vsce-action@master
+        with:
+          args: "publish -p $VSCE_PAT"
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
+      - uses: lannonbr/vsce-action@master
+        name: package last release
+        with:
+          args: "package"
+      - name: package-version
+        run: node -p -e '`PACKAGE_VERSION=${require("./package.json").version}`' >> $GITHUB_ENV
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: v${{ env.PACKAGE_VERSION }}
+          artifacts: "*.vsix"
+          body: "Krinql VSCode Release"
+          draft: false
+          allowUpdates: true
+          prerelease: false
+          replacesArtifacts: true
