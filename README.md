@@ -1,15 +1,16 @@
 <img alt="Banner" src="/images/banner.png"></a>
 
 
-[Krinql](https://www.krinql.com/) allows you to write good code, super fast. It takes out the boring parts of writing code such as making manual comments, writing docstrings, and even looking up how to use a library feature, and automates them with within the VS Code editor itself.
+[Krinql](https://www.krinql.com/) allows you to write good code, super fast. It takes out the boring parts of writing code such as, writing docstrings, and even looking up how to use a library feature, and automates them with within the VS Code editor itself.
 
 <p align="center">
   <a href="https://github.com/krinql/krinql-vscode/">
-    <img alt="Build Status" src="https://img.shields.io/badge/krinql-Github-161B22?style=flat&logo=github"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=krinql.krinql-vscode">
-    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/krinql.krinql-vscode"></a>
-  <a href="#badge">
-    <img alt="krinql" src="https://img.shields.io/badge/krinql-vscode-0f80c1"></a>
+    <img alt="Github" src="https://img.shields.io/badge/krinql-Github-161B22?style=flat&logo=github"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=Krinql.krinql-vscode">
+    <img alt="VS Code Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/Krinql.krinql-vscode"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=Krinql.krinql-vscode">
+    <img alt="Visual Studio Marketplace Last Updated" src="https://img.shields.io/visual-studio-marketplace/last-updated/Krinql.krinql-vscode">
+  </a>
 </p>
 
 ## Features
@@ -53,6 +54,6 @@ Make sure to sign in by clicking the Krinql icon on the left bar of VS Code.
 
 <br>
 
-### 0.1.0
+### 0.0.1
 
-Initial beta release
+Initial Beta - Explain Code, Generate Docstring, and Ask Krinql
