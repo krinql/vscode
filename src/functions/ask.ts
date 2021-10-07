@@ -35,9 +35,10 @@ export async function askQuestion(httpHandler: AxiosInstance) {
                         console.log({err});
                         vscode.window.showErrorMessage("Error Contacting API");
                         reject("Error Contacting API");
-                    }
+                    }else{
                     vscode.window.showErrorMessage(err.response.data.message);
                     reject(err.response.data.message);
+                  }
                 }
             }
         });

@@ -35,9 +35,10 @@ export async function generateDocstring(httpHandler: AxiosInstance) {
                     if (!err.response) {
                         vscode.window.showErrorMessage("Error Contacting API");
                         reject("Error Contacting API");
-                    }
+                    }else{
                     vscode.window.showErrorMessage(err.response.data.message);
                     reject(err.response.data.message);
+                    }
                 }
             } else {
                 reject('Please select some text to generate docstring');
