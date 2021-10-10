@@ -5,6 +5,11 @@
 	"version": "0.0.3",
 	"publisher": "Krinql",
 	"icon": "images/logo.png",
+  	"homepage": "https://krinql.com",
+  	"bugs": {
+    	"url": "https://github.com/krinql/vscode/issues",
+    	"email": "support@krinql.com"
+  	},
 	"engines": {
 		"vscode": "^1.60.0"
 	},
@@ -14,6 +19,26 @@
 	"categories": [
 		"Other"
 	],
+	"license": "SEE LICENSE IN LICENSE.md",
+	"badges": [
+		{
+			"url": "https://img.shields.io/visual-studio-marketplace/d/Krinql.krinql-vscode",
+			"href": "https://marketplace.visualstudio.com/items?itemName=Krinql.krinql-vscode",
+			"description": "Krinql VS Code Extension Downloads"
+		},
+		{
+			"url": "https://img.shields.io/visual-studio-marketplace/last-updated/Krinql.krinql-vscode",
+			"href": "https://marketplace.visualstudio.com/items?itemName=Krinql.krinql-vscode",
+			"description": "Krinql VS Code Extension Last Updated"
+		},
+		{
+			"url": "https://img.shields.io/badge/krinql-Github-161B22?style=flat&logo=github",
+			"href": "https://github.com/krinql/krinql-vscode",
+			"description": "Krinql VS Code Github Repository"
+		}
+	],
+	"keywords": ["Krinql", "AI Assistant", "AI Tools", "Codex"],
+	"qna":"marketplace",
 	"activationEvents": [
 		"onView:krinql-vscode-auth",
 		"onCommand:krinql-vscode.login",
