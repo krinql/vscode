@@ -40,26 +40,18 @@
 	"keywords": ["Krinql", "AI Assistant", "AI Tools", "Codex"],
 	"qna":"marketplace",
 	"activationEvents": [
-		"onView:krinql-vscode-auth",
-		"onCommand:krinql-vscode.login",
-		"onCommand:krinql-vscode.logout",
+		"onView:loginView",
+		"onView:sidebarView",
 		"onCommand:krinql-vscode.ask",
+		"onCommand:krinql-vscode.docstring",
 		"onCommand:krinql-vscode.explain",
-		"onCommand:krinql-vscode.explaindocument"
+		"onCommand:krinql-vscode.explaindocument",
+		"onCommand:krinql-vscode.logout",
+		"onCommand:krinql-vscode.support"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
-			{
-				"command": "krinql-vscode.login",
-				"category": "Krinql",
-				"title": "Login"
-			},
-			{
-				"command": "krinql-vscode.logout",
-				"category": "Krinql",
-				"title": "Logout"
-			},
 			{
 				"command": "krinql-vscode.explain",
 				"category": "Krinql",
@@ -79,6 +71,16 @@
 				"command": "krinql-vscode.docstring",
 				"category": "Krinql",
 				"title": "Write Docstring"
+			},
+			{
+				"command": "krinql-vscode.logout",
+				"category": "Krinql",
+				"title": "Logout"
+			},
+			{
+				"command": "krinql-vscode.support",
+				"category": "Krinql",
+				"title": "Support"
 			}
 		],
 		"keybindings": [
@@ -104,6 +106,13 @@
 				"when": "editorHasSelection"
 			},
 			{
+				"command": "krinql-vscode.ask",
+				"key": "cmd+ctrl+a",
+				"mac": "cmd+ctrl+a",
+				"win": "ctrl+alt+a",
+				"when": "!editorHasSelection"
+			},
+			{
 				"command": "krinql-vscode.docstring",
 				"key": "cmd+ctrl+d",
 				"mac": "cmd+ctrl+d",
@@ -120,23 +129,19 @@
 				}
 			]
 		},
-		"viewsWelcome": [
-			{
-				"view": "krinql-vscode-auth",
-				"contents": "[Sign in](command:krinql-vscode.login)\nTo learn more about krinql, go to [our website](https://krinql.com).",
-				"when": "!isAuthed"
-			},
-			{
-				"view": "krinql-vscode-auth",
-				"contents": "[Sign Out](command:krinql-vscode.logout)\nHow to use krinql\n1. Highlight some code\n2. Right click to open the context menu\n3. Select 'Explain Code' or any other function\nLearn more about krinql at [our website](https://krinql.com).",
-				"when": "isAuthed"
-			}
-		],
 		"views": {
 			"krinql": [
 				{
-					"id": "krinql-vscode-auth",
-					"name": "Authentication"
+					"when": "!isAuthed",
+					"type": "webview",
+					"id": "loginView",
+					"name": "Login"
+				},
+				{
+					"when": "isAuthed",
+					"type": "webview",
+					"id": "sideBarView",
+					"name": "Krinql"
 				}
 			]
 		},
@@ -145,27 +150,30 @@
 				{
 					"when": "isAuthed",
 					"command": "krinql-vscode.logout"
+				},
+				{
+					"command": "krinql-vscode.support"
 				}
 			],
 			"editor/context": [
 				{
-					"when": "editorHasSelection",
+					"when": "editorHasSelection && isAuthed",
 					"command": "krinql-vscode.explain"
 				},
 				{
-					"when": "!editorHasSelection",
+					"when": "!editorHasSelection && isAuthed",
 					"command": "krinql-vscode.explaindocument"
 				},
 				{
-					"when": "editorHasSelection",
+					"when": "editorHasSelection && isAuthed",
 					"command": "krinql-vscode.ask"
 				},
 				{
-					"when": "!editorHasSelection",
+					"when": "!editorHasSelection && isAuthed",
 					"command": "krinql-vscode.ask"
 				},
 				{
-					"when": "editorHasSelection",
+					"when": "editorHasSelection && isAuthed",
 					"command": "krinql-vscode.docstring"
 				}
 			]
@@ -184,6 +192,7 @@
 		"@types/vscode": "^1.60.0",
 		"@typescript-eslint/eslint-plugin": "^4.26.0",
 		"@typescript-eslint/parser": "^4.26.0",
+		"concurrently": "^6.3.0",
 		"eslint": "^7.27.0",
 		"glob": "^7.1.7",
 		"mocha": "^8.4.0",
@@ -192,6 +201,7 @@
 	},
 	"dependencies": {
 		"axios": "^0.21.4",
-		"dotenv": "^10.0.0"
+		"dotenv": "^10.0.0",
+		"jwt-decode": "^3.1.2"
 	}
 }

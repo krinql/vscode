@@ -1,14 +1,16 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import jwt_decode from 'jwt-decode';
 import axios, { AxiosRequestConfig } from 'axios';
 import { URLSearchParams } from 'url';
-import { LOGIN_URL, LOGOUT_URL, FIREBASE_API_KEY } from './config';
+import { SUPPORT_URL, LOGOUT_URL, FIREBASE_API_KEY } from './config';
 import { httpHandler } from './util/util';
 import { askQuestion } from './functions/ask';
 import { explainCode, explainDocument } from './functions/explain';
 import { generateDocstring } from './functions/docstring';
-
+import { SideBarViewProvider } from './sideBar';
+import { AccessToken } from './util/types';
 
 // this method is called when the extension is activated
 // the extension is activated the very first time the command is executed
@@ -16,9 +18,29 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let storageManager: vscode.Memento = context.globalState;
 
-	vscode.commands.executeCommand('setContext', 'isAuthed', storageManager.get('accessToken', null) !== null);
+	const uriListener = vscode.window.registerUriHandler({
+		async handleUri(uri: vscode.Uri) {
+			if (uri.path === '/callback') {
+				const query = new URLSearchParams(uri.query);
+				console.log(uri);
+				handleLogin(query.get('token') ?? '', query.get('refreshToken') ?? '');
+			}
+			else if (uri.path === '/logout') {
+				handleLogout();
+			}
+		}
+	});
 
-	// Request interceptor
+	const loginProvider = new SideBarViewProvider(context, storageManager, uriListener, 'login');
+	const sideBarProvider = new SideBarViewProvider(context, storageManager, uriListener, 'sidebar');
+	
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider('loginView', loginProvider), 
+		vscode.window.registerWebviewViewProvider('sideBarView', sideBarProvider)
+	);
+
+	vscode.commands.executeCommand('setContext', 'isAuthed', storageManager.get('token', null) !== null);
+
 	httpHandler.interceptors.request.use(
 		async (config) => {
 		  config.headers = { 
@@ -33,7 +55,6 @@ export function activate(context: vscode.ExtensionContext) {
 		  Promise.reject(error);
 	  });
 
-	// Response Interceptor
 	httpHandler.interceptors.response.use((response) => {
 		return response;
 	  }, async function (error) {
@@ -68,39 +89,37 @@ export function activate(context: vscode.ExtensionContext) {
 		  if(response.status === 200) {
 			  const token = response.data.id_token;
 			  const refreshToken = response.data.refresh_token;
-			  storageManager.update('token', token);
-			  storageManager.update('refresh_token', refreshToken);
+			  handleLogin(token, refreshToken);
 		  } else {
 			vscode.window.showErrorMessage("Authentication Failure");
-			storageManager.update('accessToken', null);
-			storageManager.update('refreshToken', null);
-			vscode.commands.executeCommand('setContext', 'isAuthed', false);
+			handleLogout();
 		  }
 	};
 
-	const uriListener = vscode.window.registerUriHandler({
-		async handleUri(uri: vscode.Uri) {
-			if (uri.path === '/callback') {
-				const query = new URLSearchParams(uri.query);
-				console.log(uri);
-				vscode.commands.executeCommand('setContext', 'isAuthed', true);
-				storageManager.update('token', query.get('token'));
-				storageManager.update('refreshToken', query.get('refreshToken'));
-			}
-			else if (uri.path === '/logout') {
-				storageManager.update('token', null);
-				storageManager.update('refreshToken', null);
-				vscode.commands.executeCommand('setContext', 'isAuthed', false);
-			}
-		}
-	});
+	function handleLogin(token: string, refreshToken: string) {
+		const decodedToken: AccessToken = jwt_decode(token);
+		storageManager.update('photo', decodedToken?.picture);
+		storageManager.update('name', decodedToken?.name);
+		storageManager.update('token', token);
+		storageManager.update('refreshToken', refreshToken);
+		vscode.commands.executeCommand('setContext', 'isAuthed', true);
+	}
 
-	const login = vscode.commands.registerCommand('krinql-vscode.login', async () => {
-		vscode.env.openExternal(vscode.Uri.parse(LOGIN_URL));
-	});
+	function handleLogout() {
+		storageManager.update('token', null);
+		storageManager.update('refreshToken', null);
+		storageManager.update('photo', null);
+		storageManager.update('name', null);
+		vscode.commands.executeCommand('setContext', 'isAuthed', false);
+	}
 
 	const logout = vscode.commands.registerCommand('krinql-vscode.logout', async () => {
 		vscode.env.openExternal(vscode.Uri.parse(LOGOUT_URL));
+		handleLogout();
+	});
+
+	const support = vscode.commands.registerCommand('krinql-vscode.support', async () => {
+		vscode.env.openExternal(vscode.Uri.parse(SUPPORT_URL));
 	});
 
 	const ask = vscode.commands.registerCommand('krinql-vscode.ask', async () => askQuestion(httpHandler));
@@ -112,7 +131,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const createDocstring = vscode.commands.registerCommand('krinql-vscode.docstring', async () => generateDocstring(httpHandler));
 
 	context.subscriptions.push(
-		login, logout, explain, ask, explaindocument,
+		explain, ask, explaindocument, logout, support,
 		createDocstring, uriListener 
 	);
 	

@@ -1,0 +1,1 @@
+// For sidebar webview javascript

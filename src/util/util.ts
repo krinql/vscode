@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {ENDPOINT} from './../config';
+import { ENDPOINT } from '../config';
 import * as vscode from 'vscode';
 
 
@@ -18,3 +18,13 @@ export const getInsert = (editor: vscode.TextEditor): vscode.Position => {
     const insertPos = new vscode.Position(editor.selection.start.line, editor.document.lineAt(editor.selection.start.line).firstNonWhitespaceCharacterIndex);
     return insertPos;
 };
+
+export function getNonce() {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 32; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
+    

@@ -26,8 +26,12 @@ export async function askQuestion(httpHandler: AxiosInstance) {
                     });
                     const output  = askRes.data.data[0];
                     console.log( {output} );
-                    //replaceTokens(newRefreshToken, newAccessToken);
-                    vscode.window.showInformationMessage(output);
+                    vscode.window.showInformationMessage(output, 'Copy')
+                    .then(selection => {
+                        if (selection === 'Copy') {
+                          vscode.env.clipboard.writeText(output);
+                        }
+                      });
                     resolve(output);
                 } catch (err: any) {
                     console.log({err});

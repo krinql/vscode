@@ -14,6 +14,7 @@ export async function explainDocument(httpHandler: AxiosInstance) {
         return new Promise(async (resolve, reject) => {
             if (vscode.window.activeTextEditor?.selection) {
                 const highlight = vscode.window.activeTextEditor.document.getText();
+                console.log(highlight);
                 const insert = new vscode.Position(0, 0);
 
                 try {
@@ -55,6 +56,7 @@ export async function explainCode(httpHandler: AxiosInstance) {
         return new Promise(async (resolve, reject) => {
             if (vscode.window.activeTextEditor?.selection) {
                 const highlight = getSelectedText(vscode.window.activeTextEditor);
+                console.log(highlight);
                 const insert = getInsert(vscode.window.activeTextEditor);
 
                 try {
