@@ -1,6 +1,5 @@
 import { AxiosInstance } from 'axios';
 import * as vscode from 'vscode';
-import { cleanOutputQnA } from '../util/util';
 
 export async function askQuestion(httpHandler: AxiosInstance) {
     const question = await vscode.window.showInputBox(
@@ -25,7 +24,7 @@ export async function askQuestion(httpHandler: AxiosInstance) {
                         },
                         template: 'factualAnswering'
                     });
-                    const output  = cleanOutputQnA(askRes.data.data[0]);
+                    const output  = askRes.data.data[0];
                     console.log( {output} );
                     //replaceTokens(newRefreshToken, newAccessToken);
                     vscode.window.showInformationMessage(output);
