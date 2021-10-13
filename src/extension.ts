@@ -9,7 +9,7 @@ import { httpHandler } from './util/util';
 import { askQuestion } from './functions/ask';
 import { explainCode, explainDocument } from './functions/explain';
 import { generateDocstring } from './functions/docstring';
-import { SideBarViewProvider } from './sideBar';
+import { SideBarViewProvider } from './sidebar';
 import { AccessToken } from './util/types';
 
 // this method is called when the extension is activated
