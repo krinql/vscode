@@ -14,7 +14,6 @@ export async function explainDocument(httpHandler: AxiosInstance) {
         return new Promise(async (resolve, reject) => {
             if (vscode.window.activeTextEditor?.selection) {
                 const highlight = vscode.window.activeTextEditor.document.getText();
-                console.log(highlight);
                 const insert = new vscode.Position(0, 0);
 
                 try {
@@ -24,9 +23,7 @@ export async function explainDocument(httpHandler: AxiosInstance) {
                         },
                         template: 'codeExplain'
                     });
-                    console.log({explainRes});
                     const output = explainRes.data.data;
-                    console.log({output});
                     const explanationWithComment = commentify("Here's what the selected code is doing:\n1."+output[0], vscode.window.activeTextEditor.document.fileName); 
                     vscode.window.activeTextEditor.insertSnippet(new vscode.SnippetString(`${explanationWithComment}\n`), insert);
                     resolve('Added explanation');
@@ -56,7 +53,6 @@ export async function explainCode(httpHandler: AxiosInstance) {
         return new Promise(async (resolve, reject) => {
             if (vscode.window.activeTextEditor?.selection) {
                 const highlight = getSelectedText(vscode.window.activeTextEditor);
-                console.log(highlight);
                 const insert = getInsert(vscode.window.activeTextEditor);
 
                 try {
@@ -66,9 +62,7 @@ export async function explainCode(httpHandler: AxiosInstance) {
                         },
                         template: 'codeExplain'
                       });
-                      console.log({explainRes});
                     const output = explainRes.data.data;
-                    console.log({output});
                     const explanationWithComment = commentify("Here's what the selected code is doing:\n1."+output[0], vscode.window.activeTextEditor.document.fileName); 
                     vscode.window.activeTextEditor.insertSnippet(new vscode.SnippetString(`${explanationWithComment}\n`), insert);
                     resolve('Added explanation');
