@@ -86,37 +86,32 @@
 		"keybindings": [
 			{
 				"command": "krinql-vscode.explain",
-				"key": "cmd+ctrl+e",
 				"mac": "cmd+ctrl+e",
-				"win": "ctrl+alt+e",
+				"key": "ctrl+alt+e",
 				"when": "editorHasSelection"
 			},
 			{
 				"command": "krinql-vscode.explaindocument",
-				"key": "cmd+ctrl+e",
 				"mac": "cmd+ctrl+e",
-				"win": "ctrl+alt+e",
+				"key": "ctrl+alt+e",
 				"when": "!editorHasSelection"
 			},
 			{
 				"command": "krinql-vscode.ask",
-				"key": "cmd+ctrl+a",
 				"mac": "cmd+ctrl+a",
-				"win": "ctrl+alt+a",
+				"key": "ctrl+alt+a",
 				"when": "editorHasSelection"
 			},
 			{
 				"command": "krinql-vscode.ask",
-				"key": "cmd+ctrl+a",
 				"mac": "cmd+ctrl+a",
-				"win": "ctrl+alt+a",
+				"key": "ctrl+alt+a",
 				"when": "!editorHasSelection"
 			},
 			{
 				"command": "krinql-vscode.docstring",
-				"key": "cmd+ctrl+d",
 				"mac": "cmd+ctrl+d",
-				"win": "ctrl+alt+d",
+				"key": "ctrl+alt+d",
 				"when": "editorHasSelection"
 			}
 		],
@@ -157,23 +152,23 @@
 			],
 			"editor/context": [
 				{
-					"when": "editorHasSelection && isAuthed",
+					"when": "editorHasSelection",
 					"command": "krinql-vscode.explain"
 				},
 				{
-					"when": "!editorHasSelection && isAuthed",
+					"when": "!editorHasSelection",
 					"command": "krinql-vscode.explaindocument"
 				},
 				{
-					"when": "editorHasSelection && isAuthed",
+					"when": "editorHasSelection",
 					"command": "krinql-vscode.ask"
 				},
 				{
-					"when": "!editorHasSelection && isAuthed",
+					"when": "!editorHasSelection",
 					"command": "krinql-vscode.ask"
 				},
 				{
-					"when": "editorHasSelection && isAuthed",
+					"when": "editorHasSelection",
 					"command": "krinql-vscode.docstring"
 				}
 			]

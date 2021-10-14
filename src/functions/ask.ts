@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
 import * as vscode from 'vscode';
+import { LOGIN_URL } from '../config';
 
 export async function askQuestion(httpHandler: AxiosInstance) {
     const question = await vscode.window.showInputBox(
@@ -37,7 +38,16 @@ export async function askQuestion(httpHandler: AxiosInstance) {
                     console.log({err});
                     if (!err.response) {
                         console.log({err});
+                        if(err.name === "auth/no-token"){
+                            vscode.window.showWarningMessage("Please login to your Krinql account.", 'Login')
+                            .then(selection => {
+                                if (selection === 'Login') {
+                                    vscode.env.openExternal(vscode.Uri.parse(LOGIN_URL));
+                                }
+                              });
+                        } else {
                         vscode.window.showErrorMessage(`Error Contacting API ${err?.message}`);
+                    }                
                         reject("Error Contacting API");
                     }else{
                     vscode.window.showErrorMessage(err.response.data.message);

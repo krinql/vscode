@@ -43,9 +43,15 @@ export function activate(context: vscode.ExtensionContext) {
 
 	httpHandler.interceptors.request.use(
 		async (config) => {
+		  const token = storageManager.get('token', null);
+		  if(!token){
+			  const customError =  new Error('Please Sign in');
+			  customError.name = "auth/no-token";
+			  throw customError;
+		  };
 		  config.headers = config.baseURL!=="https://securetoken.googleapis.com/v1" ? { 
 			// eslint-disable-next-line @typescript-eslint/naming-convention
-			'Authorization': `Bearer ${storageManager.get('token', null)}`,
+			'Authorization': `Bearer ${token}`,
 			// eslint-disable-next-line @typescript-eslint/naming-convention
 			'Content-Type': 'application/json'
 		  }:{
