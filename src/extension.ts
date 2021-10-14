@@ -43,11 +43,15 @@ export function activate(context: vscode.ExtensionContext) {
 
 	httpHandler.interceptors.request.use(
 		async (config) => {
-		  config.headers = { 
+		  config.headers = config.baseURL!=="https://securetoken.googleapis.com/v1" ? { 
 			// eslint-disable-next-line @typescript-eslint/naming-convention
 			'Authorization': `Bearer ${storageManager.get('token', null)}`,
 			// eslint-disable-next-line @typescript-eslint/naming-convention
 			'Content-Type': 'application/json'
+		  }:{
+			// eslint-disable-next-line @typescript-eslint/naming-convention
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+
 		  };
 		  return config;
 		},
@@ -59,8 +63,7 @@ export function activate(context: vscode.ExtensionContext) {
 		return response;
 	  }, async function (error) {
 		const originalRequest = error.config;
-		if (error?.response?.status === 401 && !originalRequest._retry) {
-		  originalRequest._retry = true;
+		if (error?.response?.status === 401 && originalRequest.baseURL!=="https://securetoken.googleapis.com/v1") {
 		  const token = await refreshAuthToken();            
 		  axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 		  return httpHandler(originalRequest);
@@ -75,16 +78,14 @@ export function activate(context: vscode.ExtensionContext) {
 			baseURL:'https://securetoken.googleapis.com/v1',
 			url: 'token',
 			params: {key: FIREBASE_API_KEY},
-			// eslint-disable-next-line @typescript-eslint/naming-convention
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 			data: {
 			  // eslint-disable-next-line @typescript-eslint/naming-convention
 			  grant_type: 'refresh_token',
 			  // eslint-disable-next-line @typescript-eslint/naming-convention
-			  refresh_token: storageManager.get('token')
+			  refresh_token: storageManager.get('refreshToken')
 			}
 		};
-		  
+		  try{
 		  const response = await httpHandler.request(options);
 		  if(response.status === 200) {
 			  const token = response.data.id_token;
@@ -94,6 +95,10 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showErrorMessage("Authentication Failure");
 			handleLogout();
 		  }
+		}catch(err){
+			vscode.window.showErrorMessage("Authentication Failure");
+			handleLogout();
+		}
 	};
 
 	function handleLogin(token: string, refreshToken: string) {
