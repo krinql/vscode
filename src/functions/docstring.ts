@@ -33,7 +33,7 @@ export async function generateDocstring(httpHandler: AxiosInstance) {
                 } catch (err: any) {
                     console.log({err});
                     if (!err.response) {
-                        vscode.window.showErrorMessage("Error Contacting API");
+                        vscode.window.showErrorMessage(`Error Contacting API ${err?.message}`);
                         reject("Error Contacting API");
                     }else{
                     vscode.window.showErrorMessage(err.response.data.message);

@@ -30,7 +30,7 @@ export async function explainDocument(httpHandler: AxiosInstance) {
                 } catch (err: any) {
                     console.log({err});
                     if(!err.response) {
-                        vscode.window.showErrorMessage("Error Contacting API");
+                        vscode.window.showErrorMessage(`Error Contacting API ${err?.message}`);
                         reject("Error Contacting API");
                     }else{
                     vscode.window.showErrorMessage(err.response.data.message);
@@ -69,7 +69,7 @@ export async function explainCode(httpHandler: AxiosInstance) {
                 } catch (err: any) {
                     console.log({err});
                     if (!err.response) {
-                        vscode.window.showErrorMessage("Error Contacting API");
+                        vscode.window.showErrorMessage(`Error Contacting API ${err?.message}`);
                         reject("Error Contacting API");
                     } else {
                     vscode.window.showErrorMessage(err.response.data.message);
