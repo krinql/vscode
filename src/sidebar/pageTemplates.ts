@@ -93,9 +93,9 @@ export function getSidebarHTML(htmlProps: HTMLProps): string {
                     <br><br>
                     Alternatively, you can also use <i>shortcuts</i> to do the same after highlighitng a code snippet, here's the default ones : 
                     <ul>
-                        <li>Ask krinql: Ctrl+Alt+A
-                        <li>Explain code: Ctrl+Alt+E
-                        <li>Write docstring: Ctrl+Alt+D
+                        <li>Ask krinql: Ctrl+Alt+A / ^+⌘+A
+                        <li>Explain code: Ctrl+Alt+E / ^+⌘+E
+                        <li>Write docstring: Ctrl+Alt+D / ^+⌘+D
                     </ul>
                 </div>
                 <script nonce="${htmlProps.nonce}" src="${htmlProps.scriptUri}"></script>
