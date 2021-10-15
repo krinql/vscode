@@ -1,8 +1,8 @@
 {
 	"name": "krinql-vscode",
-	"displayName": "krinql-vscode",
+	"displayName": "Krinql",
 	"description": "Krinql extension for Visual Studio Code",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"publisher": "Krinql",
 	"icon": "images/logo.png",
   	"homepage": "https://krinql.com",
