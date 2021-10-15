@@ -21,7 +21,7 @@ Ask a question about the file you are working on, which Krinql will answer.
 
 ![ask krinql](./images/ask-krinql.gif)
 
-<b>Explain (entire) Code</b>
+<b>Explain Code</b>
 
 Highlight some code, and Krinql will generate comments which describe what the highlighted code is doing. 
 
@@ -49,11 +49,3 @@ ext install krinql.krinql-vscode
 Make sure to sign in by clicking the Krinql icon on the left bar of VS Code.
 
 ![Remember Sign In](./images/sign-in.png)
-
-## Release Notes
-
-<br>
-
-### 0.0.1
-
-Initial Beta - Explain Code, Generate Docstring, and Ask Krinql
