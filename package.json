@@ -46,7 +46,7 @@
 		"onCommand:krinql-vscode.docstring",
 		"onCommand:krinql-vscode.explain",
 		"onCommand:krinql-vscode.explaindocument",
-		"onCommand:krinql-vscode.logout",
+		"onCommand:krinql-vscode.reauthenticate",
 		"onCommand:krinql-vscode.support"
 	],
 	"main": "./out/extension.js",
@@ -73,9 +73,9 @@
 				"title": "Write Docstring"
 			},
 			{
-				"command": "krinql-vscode.logout",
+				"command": "krinql-vscode.reauthenticate",
 				"category": "Krinql",
-				"title": "Logout"
+				"title": "Re-Authenticate"
 			},
 			{
 				"command": "krinql-vscode.support",
@@ -144,7 +144,7 @@
 			"view/title": [
 				{
 					"when": "isAuthed",
-					"command": "krinql-vscode.logout"
+					"command": "krinql-vscode.reauthenticate"
 				},
 				{
 					"command": "krinql-vscode.support"

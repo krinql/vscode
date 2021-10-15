@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import jwt_decode from 'jwt-decode';
 import axios, { AxiosRequestConfig } from 'axios';
 import { URLSearchParams } from 'url';
-import { SUPPORT_URL, LOGOUT_URL, FIREBASE_API_KEY } from './config';
+import { SUPPORT_URL, FIREBASE_API_KEY, LOGIN_URL } from './config';
 import { httpHandler } from './util/util';
 import { askQuestion } from './functions/ask';
 import { explainCode, explainDocument } from './functions/explain';
@@ -124,9 +124,8 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.executeCommand('setContext', 'isAuthed', false);
 	}
 
-	const logout = vscode.commands.registerCommand('krinql-vscode.logout', async () => {
-		vscode.env.openExternal(vscode.Uri.parse(LOGOUT_URL));
-		handleLogout();
+	const reauthenticate = vscode.commands.registerCommand('krinql-vscode.reauthenticate', async () => {
+		vscode.env.openExternal(vscode.Uri.parse(LOGIN_URL));
 	});
 
 	const support = vscode.commands.registerCommand('krinql-vscode.support', async () => {
@@ -142,7 +141,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const createDocstring = vscode.commands.registerCommand('krinql-vscode.docstring', async () => generateDocstring(httpHandler));
 
 	context.subscriptions.push(
-		explain, ask, explaindocument, logout, support,
+		explain, ask, explaindocument, reauthenticate, support,
 		createDocstring, uriListener 
 	);
 	
