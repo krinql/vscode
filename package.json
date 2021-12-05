@@ -140,6 +140,16 @@
 				}
 			]
 		},
+		"configuration":{
+			"type": "object",
+			"title": "Krinql Configuration",
+			"properties": {
+			"krinql-vscode.httpSystemCertificatesHotFix": {
+				"type": "boolean",
+				"default": null
+				}
+			}
+		},
 		"menus": {
 			"view/title": [
 				{

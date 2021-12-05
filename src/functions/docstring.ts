@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import * as vscode from 'vscode';
 import { getInsert, getSelectedText } from '../util/util';
 import { Commentifier } from '../util/comments';
-import { LOGIN_URL } from '../config';
+import { handleNoResponse } from '../util/errorHandlers';
 
 let commentify = new Commentifier().commentify;
 
@@ -34,20 +34,11 @@ export async function generateDocstring(httpHandler: AxiosInstance) {
                 } catch (err: any) {
                     console.log({err});
                     if (!err.response) {
-                        if(err.name === "auth/no-token"){
-                            vscode.window.showWarningMessage("Please login to your Krinql account.", 'Login')
-                            .then(selection => {
-                                if (selection === 'Login') {
-                                    vscode.env.openExternal(vscode.Uri.parse(LOGIN_URL));
-                                }
-                              });
-                        } else {
-                        vscode.window.showErrorMessage(`Error Contacting API ${err?.message}`);
-                    }                      
+                        await handleNoResponse(err);               
                         reject("Error Contacting API");
                     }else{
-                    vscode.window.showErrorMessage(err.response.data.message);
-                    reject(err.response.data.message);
+                    vscode.window.showErrorMessage(err?.response?.data?.message || err?.code);
+                    reject(err?.response?.data?.message || err?.code);
                     }
                 }
             } else {
