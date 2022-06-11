@@ -79,7 +79,7 @@ export function getSidebarHTML(htmlProps: HTMLProps): string {
                 </div>
                 <hr>
                 <div class="instructionsHolder">
-                <h3>Here's what krinql can help you do:</h3>
+                    <h3>Here's what krinql can help you do:</h3>
                     <br>
                     <b>Write Docstring:</b> Highlight a function and use the write docstring utiliy to generate  and insert a docstring for any function 
                     <br><br>
@@ -88,7 +88,7 @@ export function getSidebarHTML(htmlProps: HTMLProps): string {
                     <b>Ask Krinql:</b>  Let krinql answer simple programming queries like 
                     How to sort a list in descending order using python or even How to add CORS headers in a express js route
                     <br><br>
-                <h3>How to use:</h3>
+                    <h3>How to use:</h3>
                     Right click on a highlighted snippet of code and click on the corresponding utility option in the menu ( usually found towards the end of the list ).
                     <br><br>
                     Alternatively, you can also use <i>shortcuts</i> to do the same after highlighitng a code snippet, here's the default ones : 

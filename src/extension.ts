@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import jwt_decode from 'jwt-decode';
 import axios, { AxiosRequestConfig } from 'axios';
 import { URLSearchParams } from 'url';
-import { SUPPORT_URL, FIREBASE_API_KEY, LOGIN_URL } from './config';
+import { SUPPORT_URL, FIREBASE_API_KEY, LOGIN_URL, LOGOUT_URL } from './config';
 import { httpHandler } from './util/util';
 import { askQuestion } from './functions/ask';
 import { explainCode, explainDocument } from './functions/explain';
@@ -125,7 +125,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 
 	const reauthenticate = vscode.commands.registerCommand('krinql-vscode.reauthenticate', async () => {
-		vscode.env.openExternal(vscode.Uri.parse(LOGIN_URL));
+		vscode.env.openExternal(vscode.Uri.parse(LOGOUT_URL));
 	});
 
 	const support = vscode.commands.registerCommand('krinql-vscode.support', async () => {
