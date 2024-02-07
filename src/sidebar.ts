@@ -6,12 +6,12 @@ import { getNonce } from './util/util';
 export class SideBarViewProvider implements vscode.WebviewViewProvider {
 
   private readonly _extensionUri: vscode.Uri;
-  private readonly _storageManager: vscode.Memento;
+  private readonly _storageManager: vscode.SecretStorage;
   private readonly _uriListener: vscode.Disposable;
   private readonly _pageName: string;
   public  _view?: vscode.WebviewView;
 
-  constructor(context: vscode.ExtensionContext, storageManager: vscode.Memento, uriListener: vscode.Disposable, pageName: string) { 
+  constructor(context: vscode.ExtensionContext, storageManager: vscode.SecretStorage, uriListener: vscode.Disposable, pageName: string) { 
     this._extensionUri = context.extensionUri;
     this._storageManager = storageManager;
     this._uriListener = uriListener;
@@ -46,7 +46,7 @@ export class SideBarViewProvider implements vscode.WebviewViewProvider {
   }
 
 
-  private _getHtmlForWebview(webview: vscode.Webview, pageName: string, storageManager: vscode.Memento) : string{
+  private _getHtmlForWebview(webview: vscode.Webview, pageName: string, storageManager: vscode.SecretStorage) : string{
     // Get the local path to main script run in the webview, then convert it to a uri we can use in the webview.
     const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'sidebar_assets', 'main.js'));
 

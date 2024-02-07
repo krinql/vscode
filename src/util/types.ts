@@ -9,14 +9,14 @@ export interface HTMLProps {
     styleMainUri: vscode.Uri;
     scriptUri: vscode.Uri;
     pageName: string;
-    storageManager: vscode.Memento;
+    storageManager: vscode.SecretStorage;
     krinqlLogoUri: vscode.Uri;
 }
 
 export interface AccessToken {
-    name?: string;
-    picture?: string;
-    email?: string;
+    name: string;
+    picture: string;
+    email: string;
 
 
 }

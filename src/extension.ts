@@ -16,7 +16,7 @@ import { AccessToken } from './util/types';
 // the extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {	
 
-	let storageManager: vscode.Memento = context.globalState;
+	let secretsManager: vscode.SecretStorage = context.secrets;
 
 	const uriListener = vscode.window.registerUriHandler({
 		async handleUri(uri: vscode.Uri) {
@@ -31,19 +31,19 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	const loginProvider = new SideBarViewProvider(context, storageManager, uriListener, 'login');
-	const sideBarProvider = new SideBarViewProvider(context, storageManager, uriListener, 'sidebar');
+	const loginProvider = new SideBarViewProvider(context, secretsManager, uriListener, 'login');
+	const sideBarProvider = new SideBarViewProvider(context, secretsManager, uriListener, 'sidebar');
 	
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider('loginView', loginProvider), 
 		vscode.window.registerWebviewViewProvider('sideBarView', sideBarProvider)
 	);
 
-	vscode.commands.executeCommand('setContext', 'isAuthed', storageManager.get('token', null) !== null);
+	vscode.commands.executeCommand('setContext', 'isAuthed', secretsManager.get('token') !== undefined);
 
 	httpHandler.interceptors.request.use(
 		async (config) => {
-		  const token = storageManager.get('token', null);
+		  const token = secretsManager.get('token');
 		  if(!token){
 			  const customError =  new Error('Please Sign in');
 			  customError.name = "auth/no-token";
@@ -88,7 +88,7 @@ export function activate(context: vscode.ExtensionContext) {
 			  // eslint-disable-next-line @typescript-eslint/naming-convention
 			  grant_type: 'refresh_token',
 			  // eslint-disable-next-line @typescript-eslint/naming-convention
-			  refresh_token: storageManager.get('refreshToken')
+			  refresh_token: secretsManager.get('refreshToken')
 			}
 		};
 		  try{
@@ -109,18 +109,18 @@ export function activate(context: vscode.ExtensionContext) {
 
 	function handleLogin(token: string, refreshToken: string) {
 		const decodedToken: AccessToken = jwt_decode(token);
-		storageManager.update('photo', decodedToken?.picture);
-		storageManager.update('name', decodedToken?.name);
-		storageManager.update('token', token);
-		storageManager.update('refreshToken', refreshToken);
+		secretsManager.store('photo', decodedToken.picture);
+		secretsManager.store('name', decodedToken.name);
+		secretsManager.store('token', token);
+		secretsManager.store('refreshToken', refreshToken);
 		vscode.commands.executeCommand('setContext', 'isAuthed', true);
 	}
 
 	function handleLogout() {
-		storageManager.update('token', null);
-		storageManager.update('refreshToken', null);
-		storageManager.update('photo', null);
-		storageManager.update('name', null);
+		secretsManager.delete('token');
+		secretsManager.delete('refreshToken');
+		secretsManager.delete('photo');
+		secretsManager.delete('name');
 		vscode.commands.executeCommand('setContext', 'isAuthed', false);
 	}
 
